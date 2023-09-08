@@ -12,64 +12,70 @@ NOTION_API_KEY = config['NOTION_API_KEY']
 
 database_id = config["database_id"]
 
-# Initialize the APIs
+# Initialize Todoist and Notion APIs
 todoist_api = TodoistAPI(TODOIST_API_KEY)
 notion_api = Client(auth=NOTION_API_KEY)
 
-# Get tasks from Todoist
+# Fetch tasks from Todoist
 try:
     tasks = todoist_api.get_tasks()
 except Exception as error:
-    print(error)
+    print(error)  # Print errors if any
 
-# Get the Notion database
+# Fetch the specified Notion database
 try:
     notion_db = notion_api.databases.retrieve(database_id)
 except Exception as error:
-    print(error)
+    print(error)  # Print errors if any
 
-def add_task_to_notion(task):  
+# Function to add a task from Todoist to Notion
+def add_task_to_notion(task):
+    # Extract task details
     task_name = task.content
     task_due = task.due.date if task.due is not None else None
+
+    # Handle comments and file attachments if present
     if task.comment_count == 1:
-        comment = todoist_api.get_comments(task_id = task.id)
+        comment = todoist_api.get_comments(task_id=task.id)
         file_url = comment[0].attachment.file_url if comment[0].attachment.file_url is not None else None
         if file_url:
             task_name = task_name + " " + file_url
 
-    # task_url = task.url if task.url is not None else None
-    # if task_url:
-    #     task_name = task_name + " " + task_url 
+    # Handle task creation date, labels, and priority
     task_created = task.created_at
     task_labels = [label for label in task.labels]
     task_priority = task.priority
     task_created_date = datetime.strptime(task_created, '%Y-%m-%dT%H:%M:%S.%fZ').date().isoformat()
-    if task_due:
-        task_due_date = datetime.strptime(task_due, '%Y-%m-%d').date().isoformat()
+
+    # Construct new Notion page properties
     new_page = {
         "Task name": {"title": [{"text": {"content": task_name}}]},
         "Status": {"status": {"name": "Backlog"}},
-        "Date Created": {"date": {"start": task_created_date }},
-        "Priority":{"select": {"name": "Low"}},
-        } 
+        "Date Created": {"date": {"start": task_created_date}},
+        "Priority": {"select": {"name": "Low"}},
+    }
+
+    # Set priority if different from default
     if task_priority != 1:
         new_page["Priority"] = {"select": {"name": "High"}}
+
+    # Set due date if present
     if task_due:
-        new_page["Due date"] = {"date": {"start": task_due_date}} #"end": task_due_date, 
+        task_due_date = datetime.strptime(task_due, '%Y-%m-%d').date().isoformat()
+        new_page["Due date"] = {"date": {"start": task_due_date}}
+
+    # Set labels/tags if present
     if task_labels:
-        # labels = [todoist_api.labels.get_by_id(label_id)["name"] for label_id in task["labels"]]
         new_page["Tags"] = {"multi_select": [{"name": label} for label in task_labels]}
-    # Import tasks from Todoist to the Notion database
+
+    # Create the new page in Notion and close the task in Todoist
     try:
-        # print(new_page)
         notion_api.pages.create(parent={"database_id": database_id}, properties=new_page)
         task_id = task.id
         todoist_api.close_task(task_id)
     except Exception as error:
-        print(error)
+        print(error)  # Print errors if any
 
-# For each task in the list of tasks fetched from Todoist, add it to Notion and mark it as closed in Todoist
+# Loop through each task in Todoist to add it to Notion
 for task in tasks:
     add_task_to_notion(task)
-
-
