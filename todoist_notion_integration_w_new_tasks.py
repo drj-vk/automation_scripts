@@ -45,6 +45,7 @@ def add_task_to_notion(task):
     task_created = task.created_at
     task_labels = [label for label in task.labels]
     task_priority = task.priority
+    task_description = task.description 
     task_created_date = datetime.strptime(task_created, '%Y-%m-%dT%H:%M:%S.%fZ').date().isoformat()
 
     # Construct new Notion page properties
@@ -53,6 +54,7 @@ def add_task_to_notion(task):
         "Status": {"status": {"name": "Backlog"}},
         "Date Created": {"date": {"start": task_created_date}},
         "Priority": {"select": {"name": "Low"}},
+        "Description": {"rich_text": [{"text": {"content": task_description}}]},  # Add description field
     }
 
     # Set priority if different from default
