@@ -8,4 +8,4 @@ this script takes all of the todos from todoist and collects and saves them in n
 # cronjob:
 ```
 crontab -e
-0 * * * * /usr/bin/python3 /home/diederik/automation_scripts
+0 * * * * /usr/bin/python3 /path/to/automation_scripts
