@@ -2,9 +2,17 @@ from datetime import datetime
 from todoist_api_python.api import TodoistAPI
 from notion_client import Client
 
+import os
 import json
 
-with open('config.json') as f:
+# Get the directory of the current script
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Build the full path to config.json
+config_path = os.path.join(script_dir, 'config.json')
+
+
+with open(config_path) as f:
     config = json.load(f)
 
 TODOIST_API_KEY = config['TODOIST_API_KEY']
