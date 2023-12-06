@@ -33,20 +33,21 @@ def add_task_to_notion(task):
     # Extract task details
     task_name = task.content
     task_due = task.due.date if task.due is not None else None
-
-    # Handle comments and file attachments if present
-    if task.comment_count == 1:
-        comment = todoist_api.get_comments(task_id=task.id)
-        file_url = comment[0].attachment.file_url if comment[0].attachment.file_url is not None else None
-        if file_url:
-            task_name = task_name + " " + file_url
-
+    task_description = task.description 
     # Handle task creation date, labels, and priority
     task_created = task.created_at
     task_labels = [label for label in task.labels]
     task_priority = task.priority
-    task_description = task.description 
     task_created_date = datetime.strptime(task_created, '%Y-%m-%dT%H:%M:%S.%fZ').date().isoformat()
+
+
+    if task.comment_count > 0:
+        comments = todoist_api.get_comments(task_id=task.id)
+        file_url = comments[0].attachment.file_url if comments[0].attachment.file_url is not None else None
+        for comment in comments:
+            task_description += "\nComment: " + comment.content
+        if file_url:
+            task_description += "\nComment: " + file_url
 
     # Construct new Notion page properties
     new_page = {
