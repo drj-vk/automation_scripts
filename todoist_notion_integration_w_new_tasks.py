@@ -83,7 +83,7 @@ def add_task_to_notion(task):
     try:
         notion_api.pages.create(parent={"database_id": database_id}, properties=new_page)
         task_id = task.id
-        todoist_api.close_task(task_id)
+#        todoist_api.close_task(task_id)
     except Exception as error:
         print(error)  # Print errors if any
 

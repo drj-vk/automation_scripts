@@ -50,15 +50,21 @@ try:
     subject_field.send_keys("Checkin website did not work")
     # Fill in the description field
     description_field = driver.find_element(By.ID, description_id)
-    description_content = (
-    "Despite trying multiple browsers, I couldn't complete my online check-in. "
-    "At the airport counter, I was informed this issue is quite common and was directed to fill out the form at "
-    "https://help.flyadeal.com/hc/en-us/articles/360022294154-I-cannot-check-in-online to request a refund. "
-    "Unfortunately, I had to pay for the counter check-in and have yet to receive my refund.\n\n"
-    "Flyadeal, this situation is unacceptable. Your website's malfunction prevented me from checking in online, "
-    "yet I've been left to shoulder the cost. Your customer service has been unresponsive and has attempted to shift the blame onto me.\n\n"
-    "Please, fix your website and return my money. It's only fair that I am not penalized for an issue caused by your system."
-    )
+    escription_content = ("""
+                          Despite trying multiple browsers, I couldn't complete my online check-in. At the airport counter, I was informed this issue is quite common and was directed to fill out the form at https://help.flyadeal.com/hc/en-us/articles/360022294154-I-cannot-check-in-online to request a refund.
+                          As I said, I had to pay for the counter check-in and have not received my refund.
+                          Flyadeal, this situation is unacceptable. Your website's malfunction prevented me from checking in online, yet I've been left to shoulder the cost. Your customer service has been unresponsive and has attempted to shift the blame onto me.
+                          Please fix your website and return my money. It's only fair that I am not penalised for an issue caused by your system."""
+                        )
+    # description_content = (
+    # "Despite trying multiple browsers, I couldn't complete my online check-in. "
+    # "At the airport counter, I was informed this issue is quite common and was directed to fill out the form at "
+    # "https://help.flyadeal.com/hc/en-us/articles/360022294154-I-cannot-check-in-online to request a refund. "
+    # "Unfortunately, I had to pay for the counter check-in and have yet to receive my refund.\n\n"
+    # "Flyadeal, this situation is unacceptable. Your website's malfunction prevented me from checking in online, "
+    # "yet I've been left to shoulder the cost. Your customer service has been unresponsive and has attempted to shift the blame onto me.\n\n"
+    # "Please, fix your website and return my money. It's only fair that I am not penalized for an issue caused by your system."
+    # )
     # description_content = (
     #     "The website did not work, and I was unable to check - in. "
     #     "At the counter I was told that this is a common issue and that I should fill in the form https://help.flyadeal.com/hc/en-us/articles/360022294154-I-cannot-check-in-online."
