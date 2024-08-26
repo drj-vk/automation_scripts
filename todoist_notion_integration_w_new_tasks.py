@@ -89,4 +89,4 @@ def add_task_to_notion(task):
 
 # Loop through each task in Todoist to add it to Notion
 for task in tasks:
-    add_task_to_notion(task)
+    #add_task_to_notion(task)
