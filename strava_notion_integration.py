@@ -20,9 +20,9 @@ callback_domain = "localhost"
 
 
 payload = {
-    'client_id': "104659",
-    'client_secret': '6cbb5a5ad56edb9f5367f7130eafcf937134728f',
-    'refresh_token': 'db73ac73c4b309fe4241eb4bbccb3562c7aa66b4',
+    'client_id': STRAVA_ATHLETE_ID,
+    'client_secret': STRAVA_SECRET,
+    'refresh_token': STRAVA_REFRESH,
     'grant_type': "refresh_token",
     'f': 'json',
     'scope': 'read_all'
