@@ -11,7 +11,7 @@ with open(config_path) as f:
     config = json.load(f)
 
 NOTION_API_KEY = config['NOTION_API_KEY']
-database_id = "7ac9feae88754c2b9331bf34a71b5564"
+database_id = config['database_id']
 
 # Initialize Notion API
 notion = Client(auth=NOTION_API_KEY)
