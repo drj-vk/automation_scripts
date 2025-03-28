@@ -51,11 +51,11 @@ def add_task_to_notion(task):
 
     if task.comment_count > 0:
         comments = todoist_api.get_comments(task_id=task.id)
-        file_url = comments[0].attachment.file_url if comments[0].attachment.file_url is not None else None
         for comment in comments:
             task_description += "\nComment: " + comment.content
-        if file_url:
-            task_description += "\nComment: " + file_url
+            file_url = comment.attachment.file_url if comment.attachment.file_url is not None else None
+            if file_url:
+                task_description += "\nComment: " + file_url
 
     # Construct new Notion page properties
     new_page = {

@@ -1,14 +1,8 @@
 import requests
-# from msal import ConfidentialClientApplication
+from msal import ConfidentialClientApplication
 from todoist_api_python.api import TodoistAPI
 import json
 import os
-
-from todoist_api_python.api import TodoistAPI
-from notion_client import Client
-
-import os
-import json
 
 # Get the directory of the current script
 script_dir = os.path.dirname(os.path.abspath(__file__))
